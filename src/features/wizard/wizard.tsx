@@ -75,22 +75,15 @@ function IPhoneFrame({ children, contentRef, showRate }: { children: React.React
               </div>
             </div>
 
-            {/* App header */}
-            <div className="flex-shrink-0 px-3 py-2 flex items-center gap-2 border-b border-line">
-              {/* App icon estilo iOS */}
-              <div className="w-9 h-9 rounded-[10px] overflow-hidden shadow-lg flex-shrink-0">
-                <img
-                  src={tenant.brand.logo}
-                  alt={tenant.brand.name}
-                  className="w-full h-full object-contain p-0.5 bg-white"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-fg text-xs font-semibold">{tenant.brand.name}</p>
-                <p className="text-fg-subtle text-[10px]">Cotizá tu iPhone</p>
-              </div>
+            {/* App header — centered brand mark only */}
+            <div className="relative flex-shrink-0 px-3 py-2 flex items-center justify-center border-b border-line min-h-[52px]">
+              <img
+                src={tenant.brand.logo}
+                alt={tenant.brand.name}
+                className="h-8 sm:h-9 w-auto max-w-[70%] object-contain dark:invert"
+              />
               {showRate && rate !== null && (
-                <div className="flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
                   <p className="text-[8px] uppercase tracking-wider text-fg-subtle leading-none">{tenant.currency.exchangeRateLabel}</p>
                   <p className="text-[11px] font-semibold text-green-600 dark:text-green-400 tracking-tight mt-0.5">${rate.toLocaleString('es-AR')}</p>
                   <p className="text-[9px] text-fg-subtle mt-0.5 leading-none">
