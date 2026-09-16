@@ -66,7 +66,7 @@ function BrandBadge() {
         boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
       }}
     >
-      <img src={tenant.brand.logo} alt={tenant.brand.name} className="w-full h-full object-contain p-0.5" />
+      <img src={tenant.brand.logo} alt={tenant.brand.name} className="w-full h-full object-contain p-0.5 dark:invert" />
     </div>
   )
 }

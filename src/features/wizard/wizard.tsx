@@ -87,7 +87,7 @@ function IPhoneFrame({ children, contentRef, showRate }: { children: React.React
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-fg text-xs font-semibold">{tenant.brand.name}</p>
-                <p className="text-fg-subtle text-[10px]">Cotizador iPhone</p>
+                <p className="text-fg-subtle text-[10px]">Cotizá tu iPhone</p>
               </div>
               {showRate && rate !== null && (
                 <div className="flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
@@ -341,7 +341,7 @@ export function WizardPage() {
               <img
                 src={tenant.brand.logo}
                 alt={tenant.brand.name}
-                className="h-12 md:h-14 w-auto max-w-[200px] object-contain"
+                className="h-12 md:h-14 w-auto max-w-[200px] object-contain dark:invert"
               />
             </div>
 

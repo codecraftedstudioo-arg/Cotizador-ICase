@@ -20,7 +20,7 @@ export function Header() {
           <img
             src={tenant.brand.logo}
             alt={tenant.brand.name}
-            className="h-16 lg:h-20 w-auto object-contain drop-shadow-lg"
+            className="h-16 lg:h-20 w-auto object-contain drop-shadow-lg dark:invert"
           />
         </a>
 
