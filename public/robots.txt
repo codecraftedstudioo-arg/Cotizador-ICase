@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Si tenant.seo.siteUrl está definido, agregá aquí:
+# Sitemap: https://tu-dominio/sitemap.xml

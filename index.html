@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tema: aplica la clase .dark ANTES del primer paint para evitar flash.
+         El default es LIGHT: solo se activa dark si el usuario lo guardó.
+         No se consulta prefers-color-scheme a propósito: la preferencia del SO
+         no debe forzar el tema. -->
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('cotizador-theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {
+          /* default light: no hacemos nada */
+        }
+      })();
+    </script>
+    <!-- Title y description se sincronizan en runtime con tenant.seo (src/config/tenant.ts). -->
+    <meta name="description" content="Cotizá tu equipo en minutos. Precio estimado al instante." />
+    <meta name="theme-color" content="#ffffff" />
+    <title>Cotizador</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

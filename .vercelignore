@@ -1,0 +1,5 @@
+# Variables de entorno locales: NO subir al deploy.
+# El build de Vercel usa las env vars del proyecto (dashboard/CLI), no estos archivos.
+# Esto evita que un valor local de pruebas se filtre a prod.
+.env
+.env.*

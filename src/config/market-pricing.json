@@ -1,0 +1,106 @@
+{
+  "models": [
+    {
+      "id": "iphone-17-pro-max",
+      "name": "iPhone 17 Pro Max",
+      "featured": true,
+      "variants": [
+        { "storage": "256", "color": "Orange", "priceUSD": 1370, "direction": "down", "priceDiff": -20 },
+        { "storage": "256", "color": "Blue", "priceUSD": 1380, "direction": "up", "priceDiff": 15 },
+        { "storage": "256", "color": "Silver", "priceUSD": 1430, "direction": "up", "priceDiff": 10 },
+        { "storage": "512", "color": "Orange", "priceUSD": 1570, "direction": "up", "priceDiff": 30 },
+        { "storage": "512", "color": "Blue", "priceUSD": 1610, "direction": "down", "priceDiff": -25 },
+        { "storage": "512", "color": "Silver", "priceUSD": 1630, "direction": "up", "priceDiff": 5 },
+        { "storage": "1024", "color": "Orange", "priceUSD": 1830, "direction": "down", "priceDiff": -10 },
+        { "storage": "1024", "color": "Blue", "priceUSD": 1830, "direction": "up", "priceDiff": 20 }
+      ]
+    },
+    {
+      "id": "iphone-17-pro",
+      "name": "iPhone 17 Pro",
+      "featured": true,
+      "variants": [
+        { "storage": "256", "color": "Orange", "priceUSD": 1280, "direction": "up", "priceDiff": 20 },
+        { "storage": "256", "color": "Blue", "priceUSD": 1300, "direction": "down", "priceDiff": -15 },
+        { "storage": "256", "color": "Silver", "priceUSD": 1300, "direction": "up", "priceDiff": 10 },
+        { "storage": "512", "color": "Orange", "priceUSD": 1470, "direction": "down", "priceDiff": -30 },
+        { "storage": "512", "color": "Blue", "priceUSD": 1480, "direction": "up", "priceDiff": 25 },
+        { "storage": "512", "color": "Silver", "priceUSD": 1480, "direction": "down", "priceDiff": -5 },
+        { "storage": "1024", "color": "Orange", "priceUSD": 1750, "direction": "up", "priceDiff": 40 },
+        { "storage": "1024", "color": "Blue", "priceUSD": 1750, "direction": "up", "priceDiff": 40 }
+      ]
+    },
+    {
+      "id": "iphone-17",
+      "name": "iPhone 17",
+      "featured": false,
+      "variants": [
+        { "storage": "256", "color": "Lavender", "priceUSD": 899, "direction": "up", "priceDiff": 10 },
+        { "storage": "256", "color": "Sage", "priceUSD": 899, "direction": "up", "priceDiff": 10 },
+        { "storage": "256", "color": "Mist Blue", "priceUSD": 899, "direction": "up", "priceDiff": 10 },
+        { "storage": "256", "color": "White", "priceUSD": 899, "direction": "up", "priceDiff": 10 },
+        { "storage": "256", "color": "Black", "priceUSD": 899, "direction": "up", "priceDiff": 10 },
+        { "storage": "512", "color": "Lavender", "priceUSD": 999, "direction": "down", "priceDiff": -15 },
+        { "storage": "512", "color": "Sage", "priceUSD": 999, "direction": "down", "priceDiff": -15 },
+        { "storage": "512", "color": "Mist Blue", "priceUSD": 999, "direction": "down", "priceDiff": -15 },
+        { "storage": "512", "color": "White", "priceUSD": 999, "direction": "down", "priceDiff": -15 },
+        { "storage": "512", "color": "Black", "priceUSD": 999, "direction": "down", "priceDiff": -15 }
+      ]
+    },
+    {
+      "id": "iphone-17-air",
+      "name": "iPhone 17 Air",
+      "featured": false,
+      "variants": [
+        { "storage": "256", "color": "Sky Blue", "priceUSD": 899, "direction": "up", "priceDiff": 25 },
+        { "storage": "256", "color": "Light Gold", "priceUSD": 899, "direction": "up", "priceDiff": 25 },
+        { "storage": "256", "color": "Cloud White", "priceUSD": 899, "direction": "up", "priceDiff": 25 },
+        { "storage": "256", "color": "Space Black", "priceUSD": 899, "direction": "up", "priceDiff": 25 },
+        { "storage": "512", "color": "Sky Blue", "priceUSD": 999, "direction": "up", "priceDiff": 15 },
+        { "storage": "512", "color": "Light Gold", "priceUSD": 999, "direction": "up", "priceDiff": 15 },
+        { "storage": "512", "color": "Cloud White", "priceUSD": 999, "direction": "up", "priceDiff": 15 },
+        { "storage": "512", "color": "Space Black", "priceUSD": 999, "direction": "up", "priceDiff": 15 }
+      ]
+    },
+    {
+      "id": "iphone-16",
+      "name": "iPhone 16",
+      "featured": false,
+      "variants": [
+        { "storage": "128", "color": "Ultramarine", "priceUSD": 799, "direction": "down", "priceDiff": -10 },
+        { "storage": "128", "color": "Teal", "priceUSD": 799, "direction": "down", "priceDiff": -10 },
+        { "storage": "128", "color": "Pink", "priceUSD": 799, "direction": "down", "priceDiff": -10 },
+        { "storage": "128", "color": "White", "priceUSD": 799, "direction": "down", "priceDiff": -10 },
+        { "storage": "128", "color": "Black", "priceUSD": 799, "direction": "down", "priceDiff": -10 }
+      ]
+    },
+    {
+      "id": "iphone-17e",
+      "name": "iPhone 17e",
+      "featured": false,
+      "variants": [
+        { "storage": "128", "color": "Soft Pink", "priceUSD": 599, "direction": "down", "priceDiff": -10 },
+        { "storage": "128", "color": "White", "priceUSD": 599, "direction": "down", "priceDiff": -10 },
+        { "storage": "128", "color": "Black", "priceUSD": 599, "direction": "down", "priceDiff": -10 },
+        { "storage": "256", "color": "Soft Pink", "priceUSD": 699, "direction": "up", "priceDiff": 20 },
+        { "storage": "256", "color": "White", "priceUSD": 699, "direction": "up", "priceDiff": 20 },
+        { "storage": "256", "color": "Black", "priceUSD": 699, "direction": "up", "priceDiff": 20 }
+      ]
+    },
+    {
+      "id": "iphone-15",
+      "name": "iPhone 15",
+      "featured": false,
+      "variants": [
+        { "storage": "128", "color": "Pink", "priceUSD": 699, "direction": "down", "priceDiff": -30 },
+        { "storage": "128", "color": "Blue", "priceUSD": 699, "direction": "down", "priceDiff": -30 },
+        { "storage": "128", "color": "Green", "priceUSD": 699, "direction": "down", "priceDiff": -30 },
+        { "storage": "128", "color": "Yellow", "priceUSD": 699, "direction": "down", "priceDiff": -30 },
+        { "storage": "128", "color": "Black", "priceUSD": 699, "direction": "down", "priceDiff": -30 }
+      ]
+    }
+  ],
+  "currency": "USD",
+  "lastUpdated": "2026-03-31",
+  "demo": true
+}

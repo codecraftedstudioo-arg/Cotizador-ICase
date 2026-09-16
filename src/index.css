@@ -1,0 +1,415 @@
+@import "tailwindcss";
+
+/* ─── Sistema de temas ──────────────────────────────────────────────────
+   Light es el default (:root). Dark es OPCIONAL y se activa con la clase
+   `.dark` en <html> (la pone el script anti-flash de index.html y el toggle),
+   NUNCA por `prefers-color-scheme`.
+   `@custom-variant dark` hace que las utilidades `dark:` dependan de esa clase
+   en lugar de la media query del sistema (Tailwind v4). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+  /* Superficies */
+  --bg: #ffffff;          /* fondo de página */
+  --bg-subtle: #f5f5f7;   /* secciones alternas (gris Apple) */
+  --surface: #ffffff;     /* cards */
+  --surface-2: #f5f5f7;   /* superficie secundaria / elevada */
+  /* Texto — más oscuros que el market para mejor legibilidad en claro (pedido de Nico) */
+  --fg: #1d1d1f;          /* texto principal (casi negro, estilo Apple) */
+  --fg-muted: #2c2c31;    /* texto secundario (oscuro, bien legible) */
+  --fg-subtle: #45454c;   /* texto terciario */
+  /* Bordes — más marcados en claro para que los botones/cards se despeguen
+     de la pantalla blanca del celular (pedido de Nico) */
+  --line: rgba(0, 0, 0, 0.16);
+  --line-strong: rgba(0, 0, 0, 0.26);
+  /* Acento / CTA. En modo CLARO usamos el AZUL Apple (estilo apple.com) — en
+     claro Apple usa azul para los call-to-action en vez del verde. En modo
+     oscuro el acento sigue siendo el verde de marca (ver .dark). */
+  --accent: #0071e3;        /* Apple blue */
+  --accent-hover: #0077ed;
+  --accent-contrast: #ffffff;
+}
+
+.dark {
+  color-scheme: dark;
+  --bg: #000000;
+  --bg-subtle: #0a0a0a;
+  --surface: #191919;
+  --surface-2: #202020;
+  --fg: #ffffff;
+  --fg-muted: rgba(255, 255, 255, 0.62);
+  --fg-subtle: rgba(255, 255, 255, 0.42);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --accent: #22c55e;        /* verde de marca (CTA en modo oscuro) */
+  --accent-hover: #16a34a;
+  --accent-contrast: #07140c;
+}
+
+/* Exponer los tokens como utilidades Tailwind (bg-bg, text-fg, border-line, …).
+   `inline` hace que Tailwind emita var(--…), así reaccionan al cambio de tema. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+}
+
+/* Foco visible accesible (solo teclado). Specificity 0 (:where) para que los
+   componentes puedan sobreescribirlo si hace falta. */
+:where(a, button, input, select, textarea, [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Cambio de tema = fundido suave con la View Transitions API (ver use-theme.ts):
+   el navegador toma UNA sola foto de toda la página; la foto nueva se funde sobre
+   la vieja → todo cambia a la vez, sin barrido ni por partes. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  animation: none;          /* la foto vieja queda fija debajo */
+  z-index: 0;
+}
+::view-transition-new(root) {
+  z-index: 1;
+  animation: vtFadeIn 0.32s ease both;   /* la nueva se funde encima */
+}
+@keyframes vtFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* Prevent double scrollbar */
+html, body {
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Animación de entrada para los steps y hero */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeSlideIn {
+  opacity: 0;
+  animation: fadeSlideIn 0.8s ease-out forwards;
+}
+
+/* Animación contador de precio */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-countUp {
+  animation: countUp 0.5s ease-out;
+}
+
+/* Confetti burst */
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+@keyframes confettiHide {
+  0%, 95% {
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+  }
+}
+
+.confetti-piece {
+  position: fixed;
+  top: 0;
+  animation: confettiFall 3s ease-in-out forwards;
+}
+
+.animate-confetti-container {
+  animation: confettiHide 3.5s forwards;
+}
+
+/* Ken Burns effect - zoom lento con fade in/out */
+@keyframes kenburns {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  5% {
+    opacity: 1;
+  }
+  28% {
+    opacity: 1;
+  }
+  33% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+.animate-kenburns {
+  animation: kenburns 24s infinite;
+}
+
+/* Shimmer effect - brillo que se mueve */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(15deg);
+  }
+  100% {
+    transform: translateX(100%) rotate(15deg);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+/* Button shimmer - brillo que pasa por el botón */
+@keyframes btnShimmer {
+  0%, 80% {
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+.btn-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  animation: btnShimmer 3s ease-in-out infinite;
+}
+
+/* Star twinkle - brillo de estrella */
+@keyframes starTwinkle {
+  0%, 70% {
+    text-shadow: none;
+    transform: scale(1);
+  }
+  80% {
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.8), 0 0 16px rgba(251, 191, 36, 0.4);
+    transform: scale(1.3);
+  }
+  100% {
+    text-shadow: none;
+    transform: scale(1);
+  }
+}
+
+.animate-star-twinkle {
+  display: inline-block;
+  animation: starTwinkle 3s ease-in-out infinite;
+}
+
+/* Infinite scroll animation for reviews */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 15s linear infinite;
+}
+
+/* Ken Burns slow - zoom suave para intro */
+@keyframes kenburnsSlow {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  100% {
+    transform: scale(1.1) translateX(-2%);
+  }
+}
+
+.animate-kenburns-slow {
+  animation: kenburnsSlow 4s ease-out forwards;
+}
+
+/* Floating animations for 3D iPhones */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes floatDelayed {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulseSubtle {
+  0%, 100% {
+    box-shadow: 0 0 20px -4px rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 28px -2px rgba(34, 197, 94, 0.55);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2.2s ease-in-out infinite;
+}
+
+/* Skeleton shimmer - barra gris con brillo que pasa de izquierda a derecha */
+@keyframes skeletonShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  /* Light: shimmer oscuro sobre superficie clara */
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.04) 0%,
+    rgba(0,0,0,0.08) 50%,
+    rgba(0,0,0,0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+}
+
+.dark .skeleton-shimmer {
+  /* Dark: shimmer claro sobre superficie oscura */
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(255,255,255,0.10) 50%,
+    rgba(255,255,255,0.04) 100%
+  );
+  background-size: 200% 100%;
+}
+
+.animate-float-delayed {
+  animation: floatDelayed 7s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-float-slow {
+  animation: floatSlow 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Thin visible scrollbar for iPhone screen — light por defecto, claro en .dark */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.2) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.35);
+}
+.dark .scrollbar-thin {
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.35);
+}

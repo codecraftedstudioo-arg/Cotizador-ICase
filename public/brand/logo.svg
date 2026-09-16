@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" role="img" aria-label="Cotizador Demo">
+  <rect width="280" height="64" rx="14" fill="#4A6BDB"/>
+  <path fill="#fff" d="M22 18h24v4H26v8h16v4H26v12h20v4H22z"/>
+  <text x="86" y="42" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700">Cotizador</text>
+</svg>
