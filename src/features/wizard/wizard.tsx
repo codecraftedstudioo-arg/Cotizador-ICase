@@ -10,13 +10,12 @@ import {
   Step2Condition,
   Step3Details,
   Step4Functionality,
-  Step5Upgrade,
   Step6Contact,
   StepResult,
 } from './steps'
 import { tenant, getWhatsAppUrl, getMapsUrl } from '@/config/tenant'
 
-const TOTAL_STEPS = 6
+const TOTAL_STEPS = 5
 
 /**
  * iPhone 15 Pro Frame - Ultra realistic
@@ -251,7 +250,7 @@ function SideInfo({ position }: { position: 'left' | 'right' }) {
  * Form inside iPhone mockup
  */
 export function WizardPage() {
-  const { state, prevStep, canjeMode } = useWizard()
+  const { state, prevStep } = useWizard()
   useI18n() // Keep provider active
   // Espera a que los precios estén listos (panel o fallback estático) antes
   // de cotizar, así nunca se usa data a medio cargar.
@@ -267,20 +266,19 @@ export function WizardPage() {
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <Step5Upgrade />
-      case 2: return <Step1Basics />
-      case 3: return <Step2Condition />
-      case 4: return <Step3Details />
-      case 5: return <Step4Functionality />
-      case 6: return <Step6Contact />
-      case 7: return <StepResult />
-      default: return <Step5Upgrade />
+      case 1: return <Step1Basics />
+      case 2: return <Step2Condition />
+      case 3: return <Step3Details />
+      case 4: return <Step4Functionality />
+      case 5: return <Step6Contact />
+      case 6: return <StepResult />
+      default: return <Step1Basics />
     }
   }
 
-  const showProgress = (currentStep > 1 || (currentStep === 1 && canjeMode)) && currentStep <= TOTAL_STEPS
-  const displayStep = canjeMode ? currentStep : currentStep - 1
-  const displayTotal = canjeMode ? TOTAL_STEPS : TOTAL_STEPS - 1
+  const showProgress = currentStep >= 1 && currentStep <= TOTAL_STEPS
+  const displayStep = currentStep
+  const displayTotal = TOTAL_STEPS
 
   // Gate: no mostramos los pasos hasta tener los precios cargados.
   if (!pricingReady) {
@@ -374,7 +372,7 @@ export function WizardPage() {
 
             {/* iPhone Frame */}
             <div className="flex-shrink-0">
-              <IPhoneFrame contentRef={contentRef} showRate={currentStep === 7}>
+              <IPhoneFrame contentRef={contentRef} showRate={currentStep === 6}>
                 {/* Progress bar */}
                 {showProgress && (
                   <div className="mb-2">

@@ -128,7 +128,7 @@ export const tenant: TenantConfig = {
     crm: false,
     analytics: false,
     comparator: true,
-    tradeIn: true,
+    tradeIn: false,
   },
   seo: {
     title: 'Cotizador',
