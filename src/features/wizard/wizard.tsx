@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ProgressBar } from '@/components/ui'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useWizard } from './hooks/use-wizard'
@@ -252,7 +251,6 @@ function SideInfo({ position }: { position: 'left' | 'right' }) {
  * Form inside iPhone mockup
  */
 export function WizardPage() {
-  const navigate = useNavigate()
   const { state, prevStep, canjeMode } = useWizard()
   useI18n() // Keep provider active
   // Espera a que los precios estén listos (panel o fallback estático) antes
@@ -337,32 +335,20 @@ export function WizardPage() {
 
       {/* Main content */}
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Navbar - same as intro */}
+        {/* Navbar */}
         <nav className="sticky top-0 z-50 bg-bg/95 backdrop-blur-xl border-b border-line">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            {/* Logo - click to go back to home. invert: negro sobre claro / blanco sobre oscuro */}
-            <button
-              onClick={() => navigate('/')}
-              className="block overflow-visible hover:opacity-80 transition-opacity"
-            >
+            {/* Logo brand mark (no home page) */}
+            <div className="block overflow-visible">
               <img
                 src={tenant.brand.logo}
                 alt={tenant.brand.name}
                 className="h-12 md:h-14 w-auto max-w-[200px] object-contain"
               />
-            </button>
+            </div>
 
-            {/* Back to home + Step indicator + Theme toggle */}
+            {/* Step indicator + Theme toggle */}
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-1 text-fg-muted hover:text-fg text-sm transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Inicio
-              </button>
               {showProgress && (
                 <span className="text-fg-subtle text-sm font-medium">
                   Paso {displayStep}/{displayTotal}
