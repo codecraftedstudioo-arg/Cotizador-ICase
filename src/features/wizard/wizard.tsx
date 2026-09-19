@@ -334,7 +334,7 @@ export function WizardPage() {
               <img
                 src={tenant.brand.logo}
                 alt={tenant.brand.name}
-                className="h-14 md:h-16 w-auto max-w-[240px] object-contain dark:invert"
+                className="h-12 md:h-14 w-auto max-w-[220px] object-contain dark:invert"
               />
             </div>
 
