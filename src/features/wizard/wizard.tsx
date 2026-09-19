@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { ProgressBar } from '@/components/ui'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useWizard } from './hooks/use-wizard'
@@ -11,13 +10,12 @@ import {
   Step2Condition,
   Step3Details,
   Step4Functionality,
-  Step5Upgrade,
   Step6Contact,
   StepResult,
 } from './steps'
-import { tenant, getWhatsAppUrl, getMapsUrl } from '@/config/tenant'
+import { tenant, getWhatsAppUrl } from '@/config/tenant'
 
-const TOTAL_STEPS = 6
+const TOTAL_STEPS = 5
 
 /**
  * iPhone 15 Pro Frame - Ultra realistic
@@ -77,22 +75,15 @@ function IPhoneFrame({ children, contentRef, showRate }: { children: React.React
               </div>
             </div>
 
-            {/* App header */}
-            <div className="flex-shrink-0 px-3 py-2 flex items-center gap-2 border-b border-line">
-              {/* App icon estilo iOS */}
-              <div className="w-9 h-9 rounded-[10px] overflow-hidden shadow-lg flex-shrink-0">
-                <img
-                  src={tenant.brand.logo}
-                  alt={tenant.brand.name}
-                  className="w-full h-full object-contain p-0.5 bg-white"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-fg text-xs font-semibold">{tenant.brand.name}</p>
-                <p className="text-fg-subtle text-[10px]">Cotizador iPhone</p>
-              </div>
+            {/* App header — centered brand mark only */}
+            <div className="relative flex-shrink-0 px-3 py-2 flex items-center justify-center border-b border-line min-h-[52px]">
+              <img
+                src={tenant.brand.logo}
+                alt={tenant.brand.name}
+                className="h-8 sm:h-9 w-auto max-w-[70%] object-contain dark:invert"
+              />
               {showRate && rate !== null && (
-                <div className="flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
                   <p className="text-[8px] uppercase tracking-wider text-fg-subtle leading-none">{tenant.currency.exchangeRateLabel}</p>
                   <p className="text-[11px] font-semibold text-green-600 dark:text-green-400 tracking-tight mt-0.5">${rate.toLocaleString('es-AR')}</p>
                   <p className="text-[9px] text-fg-subtle mt-0.5 leading-none">
@@ -252,8 +243,7 @@ function SideInfo({ position }: { position: 'left' | 'right' }) {
  * Form inside iPhone mockup
  */
 export function WizardPage() {
-  const navigate = useNavigate()
-  const { state, prevStep, canjeMode } = useWizard()
+  const { state, prevStep } = useWizard()
   useI18n() // Keep provider active
   // Espera a que los precios estén listos (panel o fallback estático) antes
   // de cotizar, así nunca se usa data a medio cargar.
@@ -269,20 +259,19 @@ export function WizardPage() {
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <Step5Upgrade />
-      case 2: return <Step1Basics />
-      case 3: return <Step2Condition />
-      case 4: return <Step3Details />
-      case 5: return <Step4Functionality />
-      case 6: return <Step6Contact />
-      case 7: return <StepResult />
-      default: return <Step5Upgrade />
+      case 1: return <Step1Basics />
+      case 2: return <Step2Condition />
+      case 3: return <Step3Details />
+      case 4: return <Step4Functionality />
+      case 5: return <Step6Contact />
+      case 6: return <StepResult />
+      default: return <Step1Basics />
     }
   }
 
-  const showProgress = (currentStep > 1 || (currentStep === 1 && canjeMode)) && currentStep <= TOTAL_STEPS
-  const displayStep = canjeMode ? currentStep : currentStep - 1
-  const displayTotal = canjeMode ? TOTAL_STEPS : TOTAL_STEPS - 1
+  const showProgress = currentStep >= 1 && currentStep <= TOTAL_STEPS
+  const displayStep = currentStep
+  const displayTotal = TOTAL_STEPS
 
   // Gate: no mostramos los pasos hasta tener los precios cargados.
   if (!pricingReady) {
@@ -321,9 +310,9 @@ export function WizardPage() {
 
   return (
     <div className="min-h-screen bg-bg dark:bg-gradient-to-br dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 relative overflow-hidden">
-      {/* Subtle gradient orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+      {/* Soft glow behind the phone — same position, heavier blur so edges disappear */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-blue-500/20 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-purple-500/20 blur-[120px] pointer-events-none" />
 
       {/* Grid pattern */}
       <div
@@ -337,32 +326,20 @@ export function WizardPage() {
 
       {/* Main content */}
       <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Navbar - same as intro */}
+        {/* Navbar */}
         <nav className="sticky top-0 z-50 bg-bg/95 backdrop-blur-xl border-b border-line">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            {/* Logo - click to go back to home. invert: negro sobre claro / blanco sobre oscuro */}
-            <button
-              onClick={() => navigate('/')}
-              className="block overflow-visible hover:opacity-80 transition-opacity"
-            >
+            {/* Logo brand mark — fixed header slot, visually scaled up */}
+            <div className="flex h-12 md:h-14 items-center overflow-visible">
               <img
                 src={tenant.brand.logo}
                 alt={tenant.brand.name}
-                className="h-12 md:h-14 w-auto max-w-[200px] object-contain"
+                className="h-full w-auto max-w-none object-contain origin-center scale-[1.3] dark:invert"
               />
-            </button>
+            </div>
 
-            {/* Back to home + Step indicator + Theme toggle */}
+            {/* Step indicator + Theme toggle */}
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => navigate('/')}
-                className="flex items-center gap-1 text-fg-muted hover:text-fg text-sm transition-colors"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                Inicio
-              </button>
               {showProgress && (
                 <span className="text-fg-subtle text-sm font-medium">
                   Paso {displayStep}/{displayTotal}
@@ -388,7 +365,7 @@ export function WizardPage() {
 
             {/* iPhone Frame */}
             <div className="flex-shrink-0">
-              <IPhoneFrame contentRef={contentRef} showRate={currentStep === 7}>
+              <IPhoneFrame contentRef={contentRef} showRate={currentStep === 6}>
                 {/* Progress bar */}
                 {showProgress && (
                   <div className="mb-2">
@@ -448,21 +425,9 @@ export function WizardPage() {
         </main>
 
         {/* Footer */}
-        <footer className="py-4 text-center space-y-1">
+        <footer className="py-4 text-center">
           <p className="text-fg-subtle text-xs">
-            © {new Date().getFullYear()} {tenant.brand.name}
-            {tenant.contact.address && (
-              <>
-                {' · '}
-                {getMapsUrl() ? (
-                  <a href={getMapsUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-fg-muted transition-colors underline">
-                    {tenant.contact.address}
-                  </a>
-                ) : (
-                  <span>{tenant.contact.address}</span>
-                )}
-              </>
-            )}
+            © {new Date().getFullYear()} Code Crafted. Todos los derechos registrados.
           </p>
         </footer>
       </div>

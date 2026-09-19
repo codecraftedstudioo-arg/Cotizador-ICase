@@ -88,9 +88,9 @@ export type TenantConfig = {
 
 export const tenant: TenantConfig = {
   brand: {
-    name: 'Cotizador Demo',
-    shortName: 'Demo',
-    logo: '/brand/logo.svg',
+    name: 'the iCase',
+    shortName: 'iCase',
+    logo: '/brand/logo.png',
     favicon: '/brand/favicon.svg',
     hero: '/brand/hero.svg',
     website: '',
@@ -128,10 +128,10 @@ export const tenant: TenantConfig = {
     crm: false,
     analytics: false,
     comparator: true,
-    tradeIn: true,
+    tradeIn: false,
   },
   seo: {
-    title: 'Cotizador',
+    title: 'the iCase',
     description: 'Cotizá tu equipo en minutos. Precio estimado al instante.',
     siteUrl: '',
   },
