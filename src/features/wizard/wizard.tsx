@@ -13,7 +13,7 @@ import {
   Step6Contact,
   StepResult,
 } from './steps'
-import { tenant, getWhatsAppUrl, getMapsUrl } from '@/config/tenant'
+import { tenant, getWhatsAppUrl } from '@/config/tenant'
 
 const TOTAL_STEPS = 5
 
@@ -425,21 +425,9 @@ export function WizardPage() {
         </main>
 
         {/* Footer */}
-        <footer className="py-4 text-center space-y-1">
+        <footer className="py-4 text-center">
           <p className="text-fg-subtle text-xs">
-            © {new Date().getFullYear()} {tenant.brand.name}
-            {tenant.contact.address && (
-              <>
-                {' · '}
-                {getMapsUrl() ? (
-                  <a href={getMapsUrl()} target="_blank" rel="noopener noreferrer" className="hover:text-fg-muted transition-colors underline">
-                    {tenant.contact.address}
-                  </a>
-                ) : (
-                  <span>{tenant.contact.address}</span>
-                )}
-              </>
-            )}
+            © {new Date().getFullYear()} Code Crafted. Todos los derechos registrados.
           </p>
         </footer>
       </div>
