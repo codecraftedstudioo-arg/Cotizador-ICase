@@ -330,11 +330,11 @@ export function WizardPage() {
         <nav className="sticky top-0 z-50 bg-bg/95 backdrop-blur-xl border-b border-line">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
             {/* Logo brand mark — fixed header slot, visually scaled up */}
-            <div className="block h-12 md:h-14 overflow-visible">
+            <div className="flex h-12 md:h-14 items-center overflow-visible">
               <img
                 src={tenant.brand.logo}
                 alt={tenant.brand.name}
-                className="h-full w-auto max-w-none object-contain origin-left scale-[1.3] dark:invert"
+                className="h-full w-auto max-w-none object-contain origin-center scale-[1.3] dark:invert"
               />
             </div>
 
