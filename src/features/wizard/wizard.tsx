@@ -310,15 +310,9 @@ export function WizardPage() {
 
   return (
     <div className="min-h-screen bg-bg dark:bg-gradient-to-br dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-950 relative overflow-hidden">
-      {/* Soft gradient orbs behind the phone */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-24 left-[8%] h-[28rem] w-[28rem] rounded-full bg-blue-400/30 blur-[90px] dark:bg-blue-500/25"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-28 right-[5%] h-[28rem] w-[28rem] rounded-full bg-violet-400/30 blur-[90px] dark:bg-purple-500/25"
-      />
+      {/* Subtle gradient orbs */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
 
       {/* Grid pattern */}
       <div
