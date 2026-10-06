@@ -2,6 +2,7 @@
 // import { Button, Card } from '@/components/ui'
 // En vez de importar cada archivo por separado
 
+export { BrandLogo } from './brand-logo'
 export { Button } from './button'
 export { OptionButton } from './option-button'
 export { ProgressBar } from './progress-bar'

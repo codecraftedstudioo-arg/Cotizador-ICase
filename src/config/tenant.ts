@@ -24,6 +24,9 @@ export type TenantConfig = {
     name: string
     shortName: string
     logo: string
+    logoDark: string
+    logoMark: string
+    logoDarkMark: string
     favicon: string
     hero: string
     website: string
@@ -90,8 +93,11 @@ export const tenant: TenantConfig = {
   brand: {
     name: 'the iCase',
     shortName: 'iCase',
-    logo: '/brand/logo.png',
-    favicon: '/brand/favicon.svg',
+    logo: '/brand/logo-wordmark.png',
+    logoDark: '/brand/logo-wordmark-dark.png',
+    logoMark: '/brand/logo-light.png',
+    logoDarkMark: '/brand/logo-dark.png',
+    favicon: '/brand/favicon.png',
     hero: '/brand/hero.svg',
     website: '',
     catalogUrl: '',

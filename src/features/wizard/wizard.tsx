@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { ProgressBar } from '@/components/ui'
+import { BrandLogo, ProgressBar } from '@/components/ui'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useWizard } from './hooks/use-wizard'
 import { useI18n } from '@/lib/i18n'
@@ -77,11 +77,7 @@ function IPhoneFrame({ children, contentRef, showRate }: { children: React.React
 
             {/* App header — centered brand mark only */}
             <div className="relative flex-shrink-0 px-3 py-2 flex items-center justify-center border-b border-line min-h-[52px]">
-              <img
-                src={tenant.brand.logo}
-                alt={tenant.brand.name}
-                className="h-8 sm:h-9 w-auto max-w-[70%] object-contain dark:invert"
-              />
+              <BrandLogo size="phone" />
               {showRate && rate !== null && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
                   <p className="text-[8px] uppercase tracking-wider text-fg-subtle leading-none">{tenant.currency.exchangeRateLabel}</p>
@@ -329,13 +325,9 @@ export function WizardPage() {
         {/* Navbar */}
         <nav className="sticky top-0 z-50 bg-bg/95 backdrop-blur-xl border-b border-line">
           <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            {/* Logo brand mark — fixed header slot, visually scaled up */}
-            <div className="flex h-12 md:h-14 items-center overflow-visible">
-              <img
-                src={tenant.brand.logo}
-                alt={tenant.brand.name}
-                className="h-full w-auto max-w-none object-contain origin-center scale-[1.3] dark:invert"
-              />
+            {/* Logo: wordmark horizontal de día / icono de noche */}
+            <div className="flex h-12 md:h-14 items-center shrink-0">
+              <BrandLogo size="nav" />
             </div>
 
             {/* Step indicator + Theme toggle */}

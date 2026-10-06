@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/ui'
 import { useExchangeRate } from '@/lib/use-exchange-rate'
 import { tenant } from '@/config/tenant'
 
@@ -61,12 +62,12 @@ function FbBadge() {
 function BrandBadge() {
   return (
     <div
-      className="w-11 h-11 rounded-[10px] flex items-center justify-center flex-shrink-0 overflow-hidden ring-1 ring-line dark:ring-white/15 bg-surface"
+      className="w-11 h-11 rounded-[10px] flex-shrink-0 overflow-hidden"
       style={{
         boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
       }}
     >
-      <img src={tenant.brand.logo} alt={tenant.brand.name} className="w-full h-full object-contain p-0.5 dark:invert" />
+      <BrandLogo size="mark" />
     </div>
   )
 }
