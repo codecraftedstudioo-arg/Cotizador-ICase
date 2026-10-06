@@ -1,13 +1,12 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { I18nProvider } from '@/lib/i18n'
 import { WizardProvider } from '@/features/wizard/hooks/use-wizard'
-import { IntroScreen } from '@/features/wizard/components/intro-screen'
 import { WizardPage } from '@/features/wizard/wizard'
 import { fetchExchangeRate } from '@/lib/exchange-rate'
 import { fetchMarketPrices } from '@/lib/market-api'
 import { initPricingConfig } from '@/lib/pricing-source'
 
-// Prefetch data while user is on the landing page
+// Prefetch data as soon as the app boots
 fetchExchangeRate()
 fetchMarketPrices().catch(() => { /* hook se encarga de reintentar */ })
 // Precios/penalizaciones del panel (o fallback estático). Arranca temprano
@@ -20,7 +19,7 @@ function App() {
       <I18nProvider>
         <WizardProvider>
           <Routes>
-            <Route path="/" element={<IntroScreen />} />
+            <Route path="/" element={<Navigate to="/cotizar" replace />} />
             <Route path="/cotizar" element={<WizardPage />} />
           </Routes>
         </WizardProvider>

@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/ui'
 import { useI18n } from '@/lib/i18n'
 import { tenant, getWebsiteUrl } from '@/config/tenant'
 
@@ -17,11 +18,9 @@ export function Header() {
           rel={mainSiteUrl.startsWith('http') ? 'noopener noreferrer' : undefined}
           className="block hover:scale-105 transition-transform"
         >
-          <img
-            src={tenant.brand.logo}
-            alt={tenant.brand.name}
-            className="h-16 lg:h-20 w-auto object-contain drop-shadow-lg"
-          />
+          <div className="flex items-center">
+            <BrandLogo size="header" />
+          </div>
         </a>
 
         <div className="flex items-center gap-3">
