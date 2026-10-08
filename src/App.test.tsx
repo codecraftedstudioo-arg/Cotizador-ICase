@@ -25,8 +25,8 @@ vi.mock('@/lib/use-exchange-rate', () => ({
 const { default: App } = await import('./App')
 
 describe('App', () => {
-  it('abre el wizard en ¿Qué iPhone tenés?', async () => {
+  it('redirige a /cotizar y muestra el wizard', async () => {
     render(<App />)
-    expect(await screen.findByText('¿Qué iPhone tenés?')).toBeInTheDocument()
+    expect(await screen.findByText('¿Qué querés hacer?')).toBeInTheDocument()
   })
 })

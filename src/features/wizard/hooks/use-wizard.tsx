@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useEffect, useRef, type ReactNode } from 'react'
+import { createContext, useContext, useReducer, useEffect, useRef, useState, type ReactNode } from 'react'
 import type {
   WizardState,
   StorageCapacity,
@@ -36,7 +36,7 @@ const initialState: WizardState = {
   },
   // Step 5 - iCloud
   iCloudOff: null,
-  // Upgrade (kept for pricing/result compatibility; sell-only flow never sets these)
+  // Upgrade
   upgradeModel: null,
   upgradeStorage: null,
   upgradeColor: null,
@@ -72,7 +72,7 @@ type WizardAction =
   | { type: 'GO_TO_STEP'; payload: number }
   | { type: 'RESET' }
 
-const TOTAL_STEPS = 5
+const TOTAL_STEPS = 6
 
 function wizardReducer(state: WizardState, action: WizardAction): WizardState {
   switch (action.type) {
@@ -155,7 +155,6 @@ interface WizardContextValue {
   clearUpgrade: () => void
   setContactName: (name: string) => void
   setContactPhone: (phone: string) => void
-  /** Always false: sell-only flow (Plan Canje removed). */
   canjeMode: boolean
   setCanjeMode: (value: boolean) => void
   nextStep: () => void
@@ -168,7 +167,7 @@ interface WizardContextValue {
 
 const WizardContext = createContext<WizardContextValue | null>(null)
 
-const STORAGE_KEY = 'wizard-state-v3'
+const STORAGE_KEY = 'wizard-state-v2' // New version key to avoid conflicts
 
 function loadState(): WizardState {
   try {
@@ -177,8 +176,12 @@ function loadState(): WizardState {
     if (params.has('new') || params.has('canje')) {
       sessionStorage.removeItem(STORAGE_KEY)
       sessionStorage.removeItem('in-canje')
-      sessionStorage.removeItem('auto-canje')
+      // Limpiar flags de sesión anterior (evita que quede un "volver al original" viejo)
       sessionStorage.removeItem('original-upgrade')
+      if (params.has('canje')) {
+        sessionStorage.setItem('auto-canje', '1')
+        sessionStorage.setItem('in-canje', '1')
+      }
       // Clean the URL without reloading
       window.history.replaceState({}, '', window.location.pathname)
       return initialState
@@ -202,7 +205,13 @@ function loadState(): WizardState {
 
 export function WizardProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(wizardReducer, initialState, loadState)
+  const [canjeMode, setCanjeMode] = useState<boolean>(() => sessionStorage.getItem('in-canje') === '1')
   const celebrationRef = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    if (canjeMode) sessionStorage.setItem('in-canje', '1')
+    else sessionStorage.removeItem('in-canje')
+  }, [canjeMode])
 
   // Preload celebration audio once on mount
   useEffect(() => {
@@ -245,10 +254,10 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     clearUpgrade: () => dispatch({ type: 'CLEAR_UPGRADE' }),
     setContactName: (name) => dispatch({ type: 'SET_CONTACT_NAME', payload: name }),
     setContactPhone: (phone) => dispatch({ type: 'SET_CONTACT_PHONE', payload: phone }),
-    canjeMode: false,
-    setCanjeMode: () => {},
+    canjeMode,
+    setCanjeMode,
     nextStep: () => {
-      if (state.currentStep === 5 && celebrationRef.current) {
+      if (state.currentStep === 6 && celebrationRef.current) {
         celebrationRef.current.currentTime = 0
         celebrationRef.current.play().catch(() => {})
       }
@@ -263,20 +272,20 @@ export function WizardProvider({ children }: { children: ReactNode }) {
     isStepComplete: (step: number) => {
       switch (step) {
         case 1:
-          return state.model !== null && state.storage !== null
+          return true // Upgrade is optional, always complete
         case 2:
+          return state.model !== null && state.storage !== null
+        case 3:
           return (
             state.screenCondition !== null &&
             state.backCondition !== null &&
             state.frameCondition !== null &&
             state.hasLiquidDamage !== null
           )
-        case 3:
-          return state.batteryHealth !== null && state.hasOriginalBox !== null
         case 4:
-          return true // Checkboxes always complete
+          return state.batteryHealth !== null && state.hasOriginalBox !== null
         case 5:
-          return true // Contact validates itself before advancing
+          return true // Checkboxes always complete
         default:
           return false
       }

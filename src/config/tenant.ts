@@ -134,7 +134,7 @@ export const tenant: TenantConfig = {
     crm: false,
     analytics: false,
     comparator: true,
-    tradeIn: false,
+    tradeIn: true,
   },
   seo: {
     title: 'the iCase',
