@@ -21,8 +21,30 @@ const TOTAL_STEPS = 6
 /**
  * iPhone 15 Pro Frame - Ultra realistic
  */
+function ExchangeRateBadge() {
+  const { rate, updatedAt } = useExchangeRate()
+  if (rate === null) return null
+
+  const when = updatedAt ? new Date(updatedAt) : new Date()
+  const time = when.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })
+  const date = when.toLocaleDateString('es-AR')
+
+  return (
+    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2 py-1.5 text-right leading-none">
+      <p className="text-[7px] uppercase tracking-wider text-fg-subtle">
+        {tenant.currency.exchangeRateLabel}
+      </p>
+      <p className="text-[12px] font-bold text-green-600 dark:text-green-400 tracking-tight mt-0.5">
+        ${rate.toLocaleString('es-AR')}
+      </p>
+      <p className="text-[8px] text-fg-muted mt-0.5">
+        {time} - {date}
+      </p>
+    </div>
+  )
+}
+
 function IPhoneFrame({ children, contentRef, showRate }: { children: React.ReactNode; contentRef?: React.RefObject<HTMLDivElement | null>; showRate?: boolean }) {
-  const { rate } = useExchangeRate()
   return (
     <div className="relative mx-auto w-[300px] sm:w-[350px] md:w-[390px]">
       {/* Phone shadow */}
@@ -76,20 +98,10 @@ function IPhoneFrame({ children, contentRef, showRate }: { children: React.React
               </div>
             </div>
 
-            {/* App header — centered brand mark only */}
+            {/* App header — brand + cotización del día (resultado) */}
             <div className="relative flex-shrink-0 px-3 py-2 flex items-center justify-center border-b border-line min-h-[52px]">
               <BrandLogo size="phone" />
-              {showRate && rate !== null && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
-                  <p className="text-[8px] uppercase tracking-wider text-fg-subtle leading-none">{tenant.currency.exchangeRateLabel}</p>
-                  <p className="text-[11px] font-semibold text-green-600 dark:text-green-400 tracking-tight mt-0.5">${rate.toLocaleString('es-AR')}</p>
-                  <p className="text-[9px] text-fg-subtle mt-0.5 leading-none">
-                    {new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                    {' · '}
-                    {new Date().toLocaleDateString('es-AR')}
-                  </p>
-                </div>
-              )}
+              {showRate && <ExchangeRateBadge />}
             </div>
 
             {/* Screen content - starts from top with padding */}

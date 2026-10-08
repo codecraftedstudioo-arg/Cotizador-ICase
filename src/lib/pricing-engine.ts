@@ -275,6 +275,12 @@ export function formatPrice(price: number): string {
   return `USD ${price.toLocaleString('es-AR')}`
 }
 
+/** Formatea un monto USD como ARS usando la cotización actual (sin redondeo a miles). */
+export function formatPriceARS(usd: number, rate: number): string {
+  const ars = Math.round(usd * rate)
+  return `${ars.toLocaleString('es-AR')} ARS`
+}
+
 /** Formatea capacidad ("256" → "256 GB", "1024" → "1 TB"). */
 export function formatStorage(storage: string): string {
   const num = parseInt(storage)

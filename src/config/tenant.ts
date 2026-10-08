@@ -122,7 +122,7 @@ export const tenant: TenantConfig = {
   },
   currency: {
     code: 'USD',
-    exchangeRateLabel: 'Dólar blue',
+    exchangeRateLabel: 'Dólar Blue',
   },
   stats: {
     devicesEvaluated: 500,

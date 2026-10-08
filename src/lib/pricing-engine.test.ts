@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { calculatePrice, formatPrice, getAvailableModels, getStorageForModel } from './pricing-engine'
+import { calculatePrice, formatPrice, formatPriceARS, getAvailableModels, getStorageForModel } from './pricing-engine'
 import type { WizardState, StorageCapacity } from '@/features/wizard/types'
 
 // Helper para crear estado completo con nueva estructura
@@ -340,5 +340,11 @@ describe('formatPrice', () => {
   it('handles zero price', () => {
     const formatted = formatPrice(0)
     expect(formatted).toContain('0')
+  })
+})
+
+describe('formatPriceARS', () => {
+  it('convierte USD a ARS con formato es-AR', () => {
+    expect(formatPriceARS(800, 1555)).toBe('1.244.000 ARS')
   })
 })

@@ -18,7 +18,7 @@ vi.mock('@/lib/market-api', () => ({
   fetchMarketPrices: () => Promise.resolve({ models: [], currency: 'USD', lastUpdated: '' }),
 }))
 vi.mock('@/lib/use-exchange-rate', () => ({
-  useExchangeRate: () => ({ rate: 1400, loading: false, failed: false }),
+  useExchangeRate: () => ({ rate: 1400, updatedAt: Date.now(), loading: false, failed: false }),
 }))
 
 // Import after the mocks so App's module-level effects use them.
