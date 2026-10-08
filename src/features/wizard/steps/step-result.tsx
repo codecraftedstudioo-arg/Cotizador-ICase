@@ -1,7 +1,7 @@
 import { Card, Button } from '@/components/ui'
 import { useWizard } from '../hooks/use-wizard'
 import { useI18n } from '@/lib/i18n'
-import { calculatePrice, formatPrice, formatStorage, getDisplayedOfferPrice } from '@/lib/pricing-engine'
+import { calculatePrice, formatPrice, formatPriceARS, formatStorage, getDisplayedOfferPrice } from '@/lib/pricing-engine'
 import { buildWhatsAppLink, buildInquiryLink } from '@/lib/whatsapp-builder'
 import type { UpgradeInfo } from '@/features/wizard/types'
 import { useExchangeRate } from '@/lib/use-exchange-rate'
@@ -84,10 +84,12 @@ export function StepResult() {
   // Precios Admin = Plan Canje. En "solo venta" se aplica canjeBonus (descuento).
   const isCanje = Boolean(upgradeInfo)
   const offerFinal = getDisplayedOfferPrice(priceResult.finalPrice, isCanje ? 'canje' : 'sell')
+  const sellDirectPrice = getDisplayedOfferPrice(priceResult.finalPrice, 'sell')
   const offerResult = { ...priceResult, finalPrice: offerFinal }
   const whatsappLink = buildWhatsAppLink(state, offerResult, contactInfo, lang, rate ?? 0, upgradeInfo)
   const diff = upgradeInfo ? upgradeInfo.price - offerResult.finalPrice : 0
   const upgradeCovers = upgradeInfo && diff <= 0
+  const showSellDirectNote = isCanje && sellDirectPrice < offerFinal
 
   // Guardar el upgrade original para poder volver si cambia de opinión.
   // Persiste en sessionStorage para que sobreviva a refresh de la página.
@@ -170,6 +172,13 @@ export function StepResult() {
                 {lang === 'es' ? `Tu ${state.model} ${formatStorage(state.storage ?? '')} vale` : `Your ${state.model} ${formatStorage(state.storage ?? '')} is worth`}
               </p>
               <p className="text-lg font-bold text-green-600 dark:text-green-400 mt-0.5">{formatPrice(offerResult.finalPrice)}</p>
+              {showSellDirectNote && (
+                <p className="text-[11px] text-green-700/70 dark:text-green-300/60 mt-1">
+                  {lang === 'es'
+                    ? `En venta directa serían ${formatPrice(sellDirectPrice)}`
+                    : `Direct sale would be ${formatPrice(sellDirectPrice)}`}
+                </p>
+              )}
             </div>
 
             {/* New iPhone price */}
@@ -189,8 +198,8 @@ export function StepResult() {
                 {formatPrice(Math.abs(diff))}
               </p>
               {rate !== null && Math.abs(diff) > 0 && (
-                <p className="text-lg font-bold text-fg-muted mt-1">
-                  {(Math.abs(diff) * rate).toLocaleString('es-AR')} ARS
+                <p className="text-lg font-bold text-fg mt-0.5">
+                  {formatPriceARS(Math.abs(diff), rate)}
                 </p>
               )}
             </div>
@@ -320,8 +329,8 @@ export function StepResult() {
               {formatPrice(offerResult.finalPrice)}
             </p>
             {rate !== null && (
-              <p className="text-xl sm:text-2xl font-bold text-fg-muted mt-1">
-                {(offerResult.finalPrice * rate).toLocaleString('es-AR')} ARS
+              <p className="text-xl sm:text-2xl font-bold text-fg mt-1">
+                {formatPriceARS(offerResult.finalPrice, rate)}
               </p>
             )}
             <p className="text-fg-subtle text-xs mt-1">{t('resultDisclaimer')}</p>

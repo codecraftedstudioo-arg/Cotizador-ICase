@@ -18,15 +18,15 @@ vi.mock('@/lib/market-api', () => ({
   fetchMarketPrices: () => Promise.resolve({ models: [], currency: 'USD', lastUpdated: '' }),
 }))
 vi.mock('@/lib/use-exchange-rate', () => ({
-  useExchangeRate: () => ({ rate: 1400, loading: false, failed: false }),
+  useExchangeRate: () => ({ rate: 1400, updatedAt: Date.now(), loading: false, failed: false }),
 }))
 
 // Import after the mocks so App's module-level effects use them.
 const { default: App } = await import('./App')
 
 describe('App', () => {
-  it('abre el wizard en ¿Qué iPhone tenés?', async () => {
+  it('redirige a /cotizar y muestra el wizard', async () => {
     render(<App />)
-    expect(await screen.findByText('¿Qué iPhone tenés?')).toBeInTheDocument()
+    expect(await screen.findByText('¿Qué querés hacer?')).toBeInTheDocument()
   })
 })

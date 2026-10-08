@@ -69,4 +69,32 @@ describe('fetchExchangeRate — Admin', () => {
     expect(rate).toBe(1300)
     expect(calls[0]).toBe('https://apps-script.ejemplo.com/exec')
   })
+
+  it('sin Admin ni URL propia usa Dólar Blue público (venta)', async () => {
+    vi.stubEnv('VITE_PANEL_API_URL', '')
+    vi.stubEnv('VITE_EXCHANGE_RATE_URL', '')
+    const calls: string[] = []
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (input: RequestInfo | URL) => {
+        calls.push(String(input))
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            moneda: 'USD',
+            casa: 'blue',
+            venta: 1555,
+            compra: 1535,
+          }),
+        } as unknown as Response
+      })
+    )
+
+    const mod = await import('./exchange-rate')
+    const rate = await mod.fetchExchangeRate({ force: true })
+
+    expect(rate).toBe(1555)
+    expect(calls[0]).toBe('https://dolarapi.com/v1/dolares/blue')
+  })
 })

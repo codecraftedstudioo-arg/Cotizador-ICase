@@ -10,18 +10,41 @@ import {
   Step2Condition,
   Step3Details,
   Step4Functionality,
+  Step5Upgrade,
   Step6Contact,
   StepResult,
 } from './steps'
 import { tenant, getWhatsAppUrl } from '@/config/tenant'
 
-const TOTAL_STEPS = 5
+const TOTAL_STEPS = 6
 
 /**
  * iPhone 15 Pro Frame - Ultra realistic
  */
+function ExchangeRateBadge() {
+  const { rate, updatedAt } = useExchangeRate()
+  if (rate === null) return null
+
+  const when = updatedAt ? new Date(updatedAt) : new Date()
+  const time = when.toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })
+  const date = when.toLocaleDateString('es-AR')
+
+  return (
+    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2 py-1.5 text-right leading-none">
+      <p className="text-[7px] uppercase tracking-wider text-fg-subtle">
+        {tenant.currency.exchangeRateLabel}
+      </p>
+      <p className="text-[12px] font-bold text-green-600 dark:text-green-400 tracking-tight mt-0.5">
+        ${rate.toLocaleString('es-AR')}
+      </p>
+      <p className="text-[8px] text-fg-muted mt-0.5">
+        {time} - {date}
+      </p>
+    </div>
+  )
+}
+
 function IPhoneFrame({ children, contentRef, showRate }: { children: React.ReactNode; contentRef?: React.RefObject<HTMLDivElement | null>; showRate?: boolean }) {
-  const { rate } = useExchangeRate()
   return (
     <div className="relative mx-auto w-[300px] sm:w-[350px] md:w-[390px]">
       {/* Phone shadow */}
@@ -75,20 +98,10 @@ function IPhoneFrame({ children, contentRef, showRate }: { children: React.React
               </div>
             </div>
 
-            {/* App header — centered brand mark only */}
+            {/* App header — brand + cotización del día (resultado) */}
             <div className="relative flex-shrink-0 px-3 py-2 flex items-center justify-center border-b border-line min-h-[52px]">
               <BrandLogo size="phone" />
-              {showRate && rate !== null && (
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex-shrink-0 rounded-lg bg-fg/[0.04] border border-fg/[0.08] px-2.5 py-1.5 text-right">
-                  <p className="text-[8px] uppercase tracking-wider text-fg-subtle leading-none">{tenant.currency.exchangeRateLabel}</p>
-                  <p className="text-[11px] font-semibold text-green-600 dark:text-green-400 tracking-tight mt-0.5">${rate.toLocaleString('es-AR')}</p>
-                  <p className="text-[9px] text-fg-subtle mt-0.5 leading-none">
-                    {new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}
-                    {' · '}
-                    {new Date().toLocaleDateString('es-AR')}
-                  </p>
-                </div>
-              )}
+              {showRate && <ExchangeRateBadge />}
             </div>
 
             {/* Screen content - starts from top with padding */}
@@ -239,7 +252,7 @@ function SideInfo({ position }: { position: 'left' | 'right' }) {
  * Form inside iPhone mockup
  */
 export function WizardPage() {
-  const { state, prevStep } = useWizard()
+  const { state, prevStep, canjeMode } = useWizard()
   useI18n() // Keep provider active
   // Espera a que los precios estén listos (panel o fallback estático) antes
   // de cotizar, así nunca se usa data a medio cargar.
@@ -255,19 +268,20 @@ export function WizardPage() {
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <Step1Basics />
-      case 2: return <Step2Condition />
-      case 3: return <Step3Details />
-      case 4: return <Step4Functionality />
-      case 5: return <Step6Contact />
-      case 6: return <StepResult />
-      default: return <Step1Basics />
+      case 1: return <Step5Upgrade />
+      case 2: return <Step1Basics />
+      case 3: return <Step2Condition />
+      case 4: return <Step3Details />
+      case 5: return <Step4Functionality />
+      case 6: return <Step6Contact />
+      case 7: return <StepResult />
+      default: return <Step5Upgrade />
     }
   }
 
-  const showProgress = currentStep >= 1 && currentStep <= TOTAL_STEPS
-  const displayStep = currentStep
-  const displayTotal = TOTAL_STEPS
+  const showProgress = (currentStep > 1 || (currentStep === 1 && canjeMode)) && currentStep <= TOTAL_STEPS
+  const displayStep = canjeMode ? currentStep : currentStep - 1
+  const displayTotal = canjeMode ? TOTAL_STEPS : TOTAL_STEPS - 1
 
   // Gate: no mostramos los pasos hasta tener los precios cargados.
   if (!pricingReady) {
@@ -357,7 +371,7 @@ export function WizardPage() {
 
             {/* iPhone Frame */}
             <div className="flex-shrink-0">
-              <IPhoneFrame contentRef={contentRef} showRate={currentStep === 6}>
+              <IPhoneFrame contentRef={contentRef} showRate={currentStep === 7}>
                 {/* Progress bar */}
                 {showProgress && (
                   <div className="mb-2">
